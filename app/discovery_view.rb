@@ -44,20 +44,7 @@ class DiscoveryView < UIView
     if touch.view == placardView
       location = touch.locationInView(self)
 
-      #placardView.rotation += (5.0 / 180.0f * M_PI);
-
-#      CGAffineTransform t = CGAffineTransformMakeRotation(placardView.rotation);
-
       placardView.center = Point(location.x - @orig_touch_point.x + (placardView.frame[1].width / 2), location.y - @orig_touch_point.y + (placardView.frame[1].height / 2))
-
-#      placardView.transform = t;
-
-#      CGAffineTransform rot = CGAffineTransformMakeRotation(self.rotation);
-#      CGAffineTransform txy = CGAffineTransformMakeTranslation(self.translation.x, self.translation.y);
-#      CGAffineTransform t = CGAffineTransformConcat(rot, txy);
-#      placardView.objectView.transform = t;
-
-#      placardView.frame = Rect(Point(location.x - @orig_touch_point.x, location.y - @orig_touch_point.y), placardView.frame[1])
     end
   end
     
@@ -94,6 +81,7 @@ class DiscoveryView < UIView
     # find the dx/dy of the touch on the placard
     @orig_touch_point = touch_point
 
+    # if we want to change the size of the placard when picking it up, unlikely
 #    UIView.animateWithDuration(GROW_ANIMATION_DURATION_SECONDS,
 #      animations: -> {
 #        placardView.transform = CGAffineTransformMakeScale(1.2, 1.2)
@@ -110,8 +98,6 @@ class DiscoveryView < UIView
   end
   
   def animatePlacardViewToCenter
-    # Bounces the placard back to the center
-
     welcomeLayer = placardView.layer
 
     # Create a keyframe animation to follow a path back to the center
@@ -130,6 +116,7 @@ class DiscoveryView < UIView
     CGPathMoveToPoint(thePath, nil, placardView.center.x, placardView.center.y)
     CGPathAddLineToPoint(thePath, nil, midX, midY)
 
+    # if we want to bounce it back to the center, unlikely
 #    stopBouncing = false
 #
 #    # Start the path at the placard's current location
