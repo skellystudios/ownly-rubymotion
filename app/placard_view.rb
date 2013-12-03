@@ -26,4 +26,9 @@ class PlacardView < UIView
     self.layer.shadowColor = UIColor.blackColor.CGColor
   end
   
+  def transform_equals(t)
+    self.transform = t
+
+    self.rotate( (-4 + rand(8)).degrees )
+  end
 end
