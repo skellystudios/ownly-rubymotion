@@ -32,9 +32,9 @@ class RootViewController < UIViewController
 
   def tabGestureRecognizer(tap_gesture_recognizer)
     index = @buttons.index(tap_gesture_recognizer.view)
-    p @filterNames[index]
+    # p @filterNames[index]
 
-    view_controller = DiscoveryController.new
+    view_controller = DiscoveryController.alloc.initWithCategory(@filterNames[index])
 
     self.parentViewController.pushViewController(view_controller, animated: true)
   end

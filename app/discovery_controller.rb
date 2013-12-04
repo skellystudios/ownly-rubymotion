@@ -7,5 +7,11 @@ class DiscoveryController < UIViewController
   def viewDidLoad
     super
     self.view.setBackgroundColor(UIColor.whiteColor)
+    self.view.setCategory(@category)
+  end
+
+  def initWithCategory(category)
+    @category = category
+    init
   end
 end

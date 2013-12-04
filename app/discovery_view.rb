@@ -24,6 +24,14 @@ class DiscoveryView < UIView
     end
     self
   end
+
+  def setCategory(category)
+    @categoryLabel = UITextField.alloc.initWithFrame([[10, 90], [80, 30]])
+    @categoryLabel.borderStyle = UITextBorderStyleNone
+    # p category
+    @categoryLabel.text = category
+    self.addSubview(@categoryLabel)
+  end
   
   def touchesBegan(touches, withEvent: event)
     # We only support single touches, so anyObject retrieves just that touch from touches
