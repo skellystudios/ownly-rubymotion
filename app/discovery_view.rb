@@ -4,14 +4,20 @@ class DiscoveryView < UIView
 
   attr_reader :orig_touch_point, :placards
 
+  HOTSPOT_SCREEN_FRACTION = 3
+
   def initWithFrame(frame)
     if super
-      screen = UIScreen.mainScreen.bounds
-      @hotspot_view_red = HotspotRedView.alloc.initWithFrame(Rect(0, 0, screen.width, screen.height / 5))
-      self << @hotspot_view_red
 
-      @hotspot_view_blue = HotspotBlueView.alloc.initWithFrame(Rect(0, screen.height - screen.height / 5, screen.width, screen.height / 5))
-      self << @hotspot_view_blue
+      screen = UIScreen.mainScreen.bounds
+
+      self << HeaderView.alloc.initWithFrame(Rect(0, 0, screen.width, 75))
+
+#      @hotspot_view_red = HotspotRedView.alloc.initWithFrame(Rect(0, 0, screen.width, screen.height / HOTSPOT_SCREEN_FRACTION))
+#      self << @hotspot_view_red
+#
+#      @hotspot_view_blue = HotspotBlueView.alloc.initWithFrame(Rect(0, screen.height - screen.height / HOTSPOT_SCREEN_FRACTION, screen.width, screen.height / HOTSPOT_SCREEN_FRACTION))
+#      self << @hotspot_view_blue
 
       @placards = []
       for i in 0..4
@@ -55,10 +61,10 @@ class DiscoveryView < UIView
 
       screen = UIScreen.mainScreen.bounds
 
-      if @placards[0].center.y < screen.height / 5
+      if @placards[0].center.y < screen.height / HOTSPOT_SCREEN_FRACTION
         # discard the placard
         animateDiscardPlacard
-      elsif @placards[0].center.y > screen.height - (screen.height / 5)
+      elsif @placards[0].center.y > screen.height - (screen.height / HOTSPOT_SCREEN_FRACTION)
         animateKeepPlacard
       else
         animatePlacardViewToCenter
@@ -77,6 +83,7 @@ class DiscoveryView < UIView
 
     case id
     when "toCenter"
+      @placards[0].transform_equals(CGAffineTransformIdentity)
     when "keep"
       @placards[0].removeFromSuperview
       @placards.delete_at(0)
@@ -85,9 +92,6 @@ class DiscoveryView < UIView
       @placards.delete_at(0)
     end
 
-    if @placards.length > 0
-      @placards[0].transform_equals(CGAffineTransformIdentity)
-    end
     self.userInteractionEnabled = true
   end
   
@@ -114,7 +118,7 @@ class DiscoveryView < UIView
   
   def animatePlacardViewToCenter
     self.userInteractionEnabled = false
-    welcomeLayer = @placards[0].layer
+    placardLayer = @placards[0].layer
 
     # Create a keyframe animation to follow a path back to the center
     toCenterAnimation = CAKeyframeAnimation.animationWithKeyPath(:position)
@@ -147,7 +151,7 @@ class DiscoveryView < UIView
     theGroup.animations = [toCenterAnimation]
 
     # Add the animation group to the layer
-    welcomeLayer.addAnimation(theGroup, forKey: :animatePlacardViewToCenter)
+    placardLayer.addAnimation(theGroup, forKey: :animatePlacardViewToCenter)
 
     # Set the placard view's center and transformation to the original values in preparation for the
     # end of the animation
@@ -157,7 +161,7 @@ class DiscoveryView < UIView
 
   def animateDiscardPlacard
     self.userInteractionEnabled = false
-    welcomeLayer = @placards[0].layer
+    placardLayer = @placards[0].layer
 
     # Create a keyframe animation to follow a path back to the center
     toCenterAnimation = CAKeyframeAnimation.animationWithKeyPath(:position)
@@ -168,7 +172,7 @@ class DiscoveryView < UIView
     # Create the path for the bounces
     thePath = CGPathCreateMutable()
 
-    midX = self.center.x
+    midX = @placards[0].center.x
     midY = self.center.y - 500
 
     # Start the path at the placard's current location
@@ -190,17 +194,12 @@ class DiscoveryView < UIView
     theGroup.animations = [toCenterAnimation]
 
     # Add the animation group to the layer
-    welcomeLayer.addAnimation(theGroup, forKey: :animatePlacardViewToCenter)
-
-    # Set the placard view's center and transformation to the original values in preparation for the
-    # end of the animation
-    @placards[0].center = self.center
-    @placards[0].transform_equals(CGAffineTransformIdentity)
+    placardLayer.addAnimation(theGroup, forKey: :animatePlacardViewTotop)
   end
 
   def animateKeepPlacard
     self.userInteractionEnabled = false
-    welcomeLayer = @placards[0].layer
+    placardLayer = @placards[0].layer
 
     # Create a keyframe animation to follow a path back to the center
     toCenterAnimation = CAKeyframeAnimation.animationWithKeyPath(:position)
@@ -211,7 +210,7 @@ class DiscoveryView < UIView
     # Create the path for the bounces
     thePath = CGPathCreateMutable()
 
-    midX = self.center.x
+    midX = @placards[0].center.x
     midY = self.center.y + 500
 
     # Start the path at the placard's current location
@@ -233,11 +232,6 @@ class DiscoveryView < UIView
     theGroup.animations = [toCenterAnimation]
 
     # Add the animation group to the layer
-    welcomeLayer.addAnimation(theGroup, forKey: :animatePlacardViewToCenter)
-
-    # Set the placard view's center and transformation to the original values in preparation for the
-    # end of the animation
-    @placards[0].center = self.center
-    @placards[0].transform_equals(CGAffineTransformIdentity)
+    placardLayer.addAnimation(theGroup, forKey: :animatePlacardViewToBottom)
   end
 end
