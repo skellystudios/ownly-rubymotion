@@ -1,7 +1,10 @@
 class DiscoveryController < UIViewController
   def loadView
     super
-    self.view = DiscoveryView.alloc.initWithFrame(UIScreen.mainScreen.bounds)
+    bounds = UIScreen.mainScreen.bounds
+    bounds.height -= UIApplication.sharedApplication.delegate.window.rootViewController.navigationBar.frame.height
+
+    self.view = DiscoveryView.alloc.initWithFrame(bounds)
   end
 
   def viewDidLoad

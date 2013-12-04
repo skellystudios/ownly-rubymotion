@@ -9,15 +9,16 @@ class DiscoveryView < UIView
   def initWithFrame(frame)
     if super
 
-      screen = UIScreen.mainScreen.bounds
+      #self << HeaderView.alloc.initWithFrame(Rect(0, 0, screen.width, 75))
 
-      self << HeaderView.alloc.initWithFrame(Rect(0, 0, screen.width, 75))
+      self.center.y = frame.width / 2
+      self.center.x = frame.height / 2
 
-#      @hotspot_view_red = HotspotRedView.alloc.initWithFrame(Rect(0, 0, screen.width, screen.height / HOTSPOT_SCREEN_FRACTION))
-#      self << @hotspot_view_red
-#
-#      @hotspot_view_blue = HotspotBlueView.alloc.initWithFrame(Rect(0, screen.height - screen.height / HOTSPOT_SCREEN_FRACTION, screen.width, screen.height / HOTSPOT_SCREEN_FRACTION))
-#      self << @hotspot_view_blue
+      @hotspot_view_red = HotspotRedView.alloc.initWithFrame(Rect(0, 0, frame.width, frame.height / HOTSPOT_SCREEN_FRACTION))
+      self << @hotspot_view_red
+
+      @hotspot_view_blue = HotspotBlueView.alloc.initWithFrame(Rect(0, frame.height - frame.height / HOTSPOT_SCREEN_FRACTION, frame.width, frame.height / HOTSPOT_SCREEN_FRACTION))
+      self << @hotspot_view_blue
 
       @placards = []
       for i in 0..4
@@ -130,7 +131,7 @@ class DiscoveryView < UIView
     thePath = CGPathCreateMutable()
 
     midX = self.center.x
-    midY = self.center.y
+    midY = self.center.y - 64
 
     # Start the path at the placard's current location
     CGPathMoveToPoint(thePath, nil, @placards[0].center.x, @placards[0].center.y)
