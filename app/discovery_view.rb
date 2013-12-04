@@ -7,16 +7,16 @@ class DiscoveryView < UIView
   def initWithFrame(frame)
     if super
       screen = UIScreen.mainScreen.bounds
-      @hotspot_view_red = HotspotRedView.alloc.initWithFrame(Rect(0, 0, screen.width, screen.height / 5))
+      @hotspot_view_red = HotspotRedView.alloc.initWithFrame(Rect(0, 0, screen.width, screen.height / 6))
       self << @hotspot_view_red
 
-      @hotspot_view_blue = HotspotBlueView.alloc.initWithFrame(Rect(0, screen.height - screen.height / 5, screen.width, screen.height / 5))
+      @hotspot_view_blue = HotspotBlueView.alloc.initWithFrame(Rect(0, screen.height - screen.height / 6 - 64, screen.width, screen.height / 6))
       self << @hotspot_view_blue
 
       @placards = []
       for i in 0..4
         placard_view = PlacardView.alloc.init
-        placard_view.center = self.center
+        placard_view.center = CGPointMake(self.center.x,self.center.y - 32)
         placard_view.transform_equals(CGAffineTransformIdentity)
         @placards.unshift(placard_view)
         self << placard_view
@@ -126,7 +126,7 @@ class DiscoveryView < UIView
     thePath = CGPathCreateMutable()
 
     midX = self.center.x
-    midY = self.center.y
+    midY = self.center.y - 64
 
     # Start the path at the placard's current location
     CGPathMoveToPoint(thePath, nil, @placards[0].center.x, @placards[0].center.y)
@@ -151,7 +151,7 @@ class DiscoveryView < UIView
 
     # Set the placard view's center and transformation to the original values in preparation for the
     # end of the animation
-    @placards[0].center = self.center
+    @placards[0].center = CGPointMake(self.center.x,self.center.y - 64)
     @placards[0].transform_equals(CGAffineTransformIdentity)
   end
 
@@ -194,7 +194,7 @@ class DiscoveryView < UIView
 
     # Set the placard view's center and transformation to the original values in preparation for the
     # end of the animation
-    @placards[0].center = self.center
+    @placards[0].center = CGPointMake(self.center.x,self.center.y - 64)
     @placards[0].transform_equals(CGAffineTransformIdentity)
   end
 
@@ -237,7 +237,7 @@ class DiscoveryView < UIView
 
     # Set the placard view's center and transformation to the original values in preparation for the
     # end of the animation
-    @placards[0].center = self.center
+    @placards[0].center = CGPointMake(self.center.x,self.center.y - 64)
     @placards[0].transform_equals(CGAffineTransformIdentity)
   end
 end

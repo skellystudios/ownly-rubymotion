@@ -3,7 +3,14 @@ include SugarCube::CoreGraphics
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
-    @window.rootViewController = DiscoveryController.new
+
+    root = RootViewController.alloc.init
+    nav_controller = UINavigationController.alloc.initWithRootViewController(root)
+    
+    image = UIImage.imageNamed('navbar.png')
+	nav_controller.navigationBar.setBackgroundImage(image, forBarMetrics:UIBarMetricsDefault)
+
+    @window.rootViewController = nav_controller
     @window.makeKeyAndVisible
     true
   end
