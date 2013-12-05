@@ -16,6 +16,8 @@ Motion::Project::App.setup do |app|
 
   app.frameworks += ['QuartzCore']
 
+  app.fonts = ['Cocon_Regular.ttf']
+
   app.testflight.sdk = 'vendor/TestFlight'
   app.testflight.api_token = 'da906c36ee9fdcd4a74d65851506c719_MTQ4ODAwMDIwMTMtMTItMDMgMTA6MjU6NDUuMDM4Mzk1'
   app.testflight.team_token = 'ffd3bf34bec27f4d2279ec2bf9eb2604_MzA4MzgyMjAxMy0xMi0wMyAxMDozNzo0NS41NTMxMDY'
