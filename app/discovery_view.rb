@@ -96,18 +96,16 @@ class DiscoveryView < UIView
     placard_view = PlacardView.alloc.initWithImage(PLACARD_FILES[@@placard_index])
     @@placard_index += 1
 
+    if @@placard_index >= PLACARD_FILES.length
+      @@placard_index = 0
+    end
+
     placard_view.center = Point(self.center.x, self.center.y - @y_shift)
     placard_view.transform_equals(CGAffineTransformIdentity)
     @placards.push(placard_view)
 
     self.insertSubview(placard_view, atIndex: 0)
-
     self.sendSubviewToBack(@drawer)
-#    if @placards.length > 0
-#      self.insertSubview(placard_view, belowSubview: @placards[@placards.length - 1])
-#    else
-#      self << placard_view
-#    end
   end
 
   def touchesBegan(touches, withEvent: event)
@@ -154,23 +152,21 @@ class DiscoveryView < UIView
       case id
       when "toCenter"
         @placards[0].transform_equals(CGAffineTransformIdentity)
-        self.userInteractionEnabled = true
       when "keep"
         @placards[0].removeFromSuperview
         @placards.delete_at(0)
-        0.1.seconds.later do 
+        0.1.seconds.later do
           addPlacard
-          self.userInteractionEnabled = true
         end
       when "discard"
         @placards[0].removeFromSuperview
         @placards.delete_at(0)
         0.1.seconds.later do
           addPlacard
-          self.userInteractionEnabled = true
         end
       end
 
+      self.userInteractionEnabled = true
     end
   end
   
@@ -258,6 +254,9 @@ class DiscoveryView < UIView
 
     # Add the animation group to the layer
     placardLayer.addAnimation(theGroup, forKey: :animatePlacardViewTotop)
+
+    @placards[0].center = Point(self.center.x, self.center.y - 500)
+    @placards[0].transform_equals(CGAffineTransformIdentity)
   end
 
   def animateKeepPlacard
@@ -296,5 +295,8 @@ class DiscoveryView < UIView
 
     # Add the animation group to the layer
     placardLayer.addAnimation(theGroup, forKey: :animatePlacardViewToBottom)
+
+    @placards[0].center = Point(@placards[0].center.x, self.center.y + 500)
+    @placards[0].transform_equals(CGAffineTransformIdentity)
   end
 end

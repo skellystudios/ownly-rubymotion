@@ -27,6 +27,8 @@ class RootViewController < UIViewController
       @buttons.push(filterButton)
     }
     
+    view_controller = DiscoveryController.new
+    self.parentViewController.pushViewController(view_controller, animated: true)
 
   end
 
