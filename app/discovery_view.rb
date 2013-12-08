@@ -120,6 +120,8 @@ class DiscoveryView < UIView
     # We only support single touches, so anyObject retrieves just that touch from touches
     touch = touches.anyObject
 
+    @accumulatedTouches = Array.new
+
     # Only move the placard view if the touch was in the placard view
     if touch.view == @placards[0]
       # Animate the first touch
@@ -130,6 +132,12 @@ class DiscoveryView < UIView
   def touchesMoved(touches, withEvent: event)
     touch = touches.anyObject
 
+    touches.each do |t|
+      @accumulatedTouches << {"y" => t.locationInView(self).y, "time" => t.timestamp}
+    end
+    
+
+    # If the touch was in the @placards[0], move the @placards[0] to its location
     if touch.view == @placards[0]
       location = touch.locationInView(self)
 
@@ -140,6 +148,21 @@ class DiscoveryView < UIView
   def touchesEnded(touches, withEvent: event)
     touch = touches.anyObject
 
+    if (@accumulatedTouches.length > 1)
+      averageSpeed = (@accumulatedTouches[-1]["y"] - @accumulatedTouches[0]["y"]) / (@accumulatedTouches[-1]["time"] - @accumulatedTouches[0]["time"])
+      finalSpeed = (@accumulatedTouches[-1]["y"] - @accumulatedTouches[-2]["y"]) / (@accumulatedTouches[-1]["time"] - @accumulatedTouches[-2]["time"])
+
+
+      if averageSpeed < -200 or finalSpeed < -200
+        animateDiscardPlacard
+        return
+      elsif averageSpeed > 200 or finalSpeed > 200
+        animateKeepPlacard
+        return
+      end
+    end
+
+    # If the touch was in the @placards[0], bounce it back to the center
     if touch.view == @placards[0]
       screen = UIScreen.mainScreen.bounds
 
