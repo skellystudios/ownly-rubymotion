@@ -1,8 +1,8 @@
 class PlacardView < UIView
 
-  def init
+  def initWithImage(img)
     # Retrieve the image for the view and determine its size
-    image = UIImage.imageNamed('rihanna.png')
+    image = UIImage.imageNamed(img)
     frame = CGRectMake(0, 0, image.size.width + 6, image.size.height + 6)
 
     # Set self's frame to encompass the image
