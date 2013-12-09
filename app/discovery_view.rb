@@ -72,8 +72,6 @@ class DiscoveryView < UIView
       end
 
       @drawer = UIImageView.alloc.initWithFrame(Rect(0, frame.height - 100, frame.width, 70))
-      @drawer.setImage(UIImage.imageNamed('drawer.png'))
-      self << @drawer
 
       self.center.y = frame.width / 2
       self.center.x = frame.height / 2
@@ -88,6 +86,20 @@ class DiscoveryView < UIView
       for i in 0..2
         addPlacard
       end
+
+      # add and draw the drawer
+      @back_view = DrawerBackView.alloc.initWithFrame(Rect(14, frame.height - 100, frame.width - 28, 70))
+      @front_view = DrawerFrontView.alloc.initWithFrame(Rect(8, frame.height - 96, frame.width - 16, 70))
+
+      #self.insertSubview(@label, belowSubview: @placards[@placards.length - 1])
+
+#      @left_mask = DrawerMaskView.alloc.initWithFrame(Rect(0, frame.height - 96, 8, 70))
+#      @right_mask = DrawerMaskView.alloc.initWithFrame(Rect(@front_view.frame.x + @front_view.frame.width, frame.height - 96, 8, 70))
+#      @bottom_mask = DrawerMaskView.alloc.initWithFrame(Rect(0, @front_view.frame.y + @front_view.frame.height, frame.width, frame.height - @front_view.frame.y - @front_view.frame.height))
+
+      self << @back_view
+      self << @front_view
+      #self.insertSubview(@front_view, belowSubview: @label)
     end
     self
   end
@@ -113,7 +125,6 @@ class DiscoveryView < UIView
     @placards.push(placard_view)
 
     self.insertSubview(placard_view, atIndex: 0)
-    self.sendSubviewToBack(@drawer)
   end
 
   def touchesBegan(touches, withEvent: event)
@@ -124,6 +135,12 @@ class DiscoveryView < UIView
 
     # Only move the placard view if the touch was in the placard view
     if touch.view == @placards[0]
+
+      self.insertSubview(@back_view, belowSubview: @placards[0])
+#      self.insertSubview(@left_mask, aboveSubview: @placards[0])
+#      self.insertSubview(@right_mask, aboveSubview: @placards[0])
+#      self.insertSubview(@bottom_mask, aboveSubview: @placards[0])
+
       # Animate the first touch
       animateFirstTouchAtPoint(touch.locationInView(@placards[0]))
     end
@@ -153,11 +170,14 @@ class DiscoveryView < UIView
       finalSpeed = (@accumulatedTouches[-1]["y"] - @accumulatedTouches[-2]["y"]) / (@accumulatedTouches[-1]["time"] - @accumulatedTouches[-2]["time"])
 
 
-      if averageSpeed < -200 or finalSpeed < -200
+      threshold_speed = 220
+
+      if averageSpeed < -threshold_speed or finalSpeed < -threshold_speed
         animateDiscardPlacard
         return
-      elsif averageSpeed > 200 or finalSpeed > 200
+      elsif averageSpeed > threshold_speed or finalSpeed > threshold_speed
         animateKeepPlacard
+        #@front_view.animate(@placards[0].center.y)
         return
       end
     end
