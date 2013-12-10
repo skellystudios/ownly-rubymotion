@@ -166,8 +166,6 @@ class DiscoveryView < UIView
       midY = self.center.y - @y_shift
       distFromCenter = location.y - @orig_touch_point.y
       scaleFactor = ( 1.0 -  distFromCenter.abs / ( midY + 150 )) 
-      p "distFromCenter " + distFromCenter.to_s
-      p "scaleFactor " + scaleFactor.to_s
 
       if (distFromCenter > 20)
         openDrawer
@@ -227,6 +225,7 @@ class DiscoveryView < UIView
         animateKeepPlacard
       else
         animatePlacardViewToCenter
+        closeDrawer
       end
     end
   end
