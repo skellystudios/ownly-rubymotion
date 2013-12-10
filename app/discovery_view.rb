@@ -89,7 +89,7 @@ class DiscoveryView < UIView
 
       # add and draw the drawer
       @back_view = DrawerBackView.alloc.initWithFrame(Rect(14, frame.height - 100, frame.width - 28, 70))
-      @front_view = DrawerFrontView.alloc.initWithFrame(Rect(8, frame.height - 96, frame.width - 16, 90))
+      @front_view = DrawerFrontView.alloc.initWithFrame(Rect(0, frame.height - 96, frame.width, 90))
 
       1.second.later do
         closeDrawer
@@ -181,13 +181,13 @@ class DiscoveryView < UIView
 
   def closeDrawer()
     UIView.animate do
-      @front_view.frame = Rect(14, frame.height - 80, frame.width - 28, 90)
+      @front_view.frame = Rect(6, frame.height - 80, frame.width - 12, 90)
     end
   end
 
   def openDrawer()
     UIView.animate do
-      @front_view.frame = Rect(8, frame.height - 72, frame.width - 16, 90)
+      @front_view.frame = Rect(0, frame.height - 72, frame.width, 90)
     end
   end
     

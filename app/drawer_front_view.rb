@@ -64,6 +64,12 @@ class DrawerFrontView < UIView
     [255, 255, 255].uicolor.setFill
     UIRectFill(Rect(rect.x, rect.y + rect.height - 20, rect.width, 20))
 
+    [255, 255, 255].uicolor.setFill
+    UIRectFill(Rect(rect.x, rect.y, 8, rect.height))
+
+    [255, 255, 255].uicolor.setFill
+    UIRectFill(Rect(rect.width - 8, rect.y, 8, rect.height))
+
 
     @label = UILabel.alloc.initWithFrame(Rect(rect.x, rect.y , rect.width, rect.height - 20))
     @label.text = "DRAWER"
