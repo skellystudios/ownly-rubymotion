@@ -91,6 +91,10 @@ class DiscoveryView < UIView
       @back_view = DrawerBackView.alloc.initWithFrame(Rect(14, frame.height - 100, frame.width - 28, 70))
       @front_view = DrawerFrontView.alloc.initWithFrame(Rect(8, frame.height - 96, frame.width - 16, 90))
 
+      1.second.later do
+        closeDrawer
+      end
+
       #self.insertSubview(@label, belowSubview: @placards[@placards.length - 1])
 
 #      @left_mask = DrawerMaskView.alloc.initWithFrame(Rect(0, frame.height - 96, 8, 70))
@@ -178,11 +182,15 @@ class DiscoveryView < UIView
   end
 
   def closeDrawer()
-    @front_view.frame = Rect(14, frame.height - 80, frame.width - 28, 90)
+    UIView.animate do
+      @front_view.frame = Rect(14, frame.height - 80, frame.width - 28, 90)
+    end
   end
 
   def openDrawer()
-    @front_view.frame = Rect(8, frame.height - 76, frame.width - 16, 90)
+    UIView.animate do
+      @front_view.frame = Rect(8, frame.height - 72, frame.width - 16, 90)
+    end
   end
     
   def touchesEnded(touches, withEvent: event)
@@ -201,7 +209,9 @@ class DiscoveryView < UIView
         return
       elsif averageSpeed > threshold_speed or finalSpeed > threshold_speed
         animateKeepPlacard
-        App.run_after(0.5) { closeDrawer }
+        0.5.second.later do
+          closeDrawer
+        end
         #@front_view.animate(@placards[0].center.y)
         return
       end
