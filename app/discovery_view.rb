@@ -88,8 +88,8 @@ class DiscoveryView < UIView
       end
 
       # add and draw the drawer
-      @back_view = DrawerBackView.alloc.initWithFrame(Rect(14, frame.height - 100, frame.width - 28, 70))
-      @front_view = DrawerFrontView.alloc.initWithFrame(Rect(0, frame.height - 96, frame.width, 90))
+      @back_view = DrawerBackView.alloc.initWithFrame(Rect(14, frame.height - 86, frame.width - 28, 30))
+      @front_view = DrawerFrontView.alloc.initWithFrame(Rect(0, frame.height - 80, frame.width, 60))
 
       1.second.later do
         closeDrawer
@@ -168,7 +168,7 @@ class DiscoveryView < UIView
       scaleFactor = ( 1.0 -  distFromCenter.abs / ( midY + 550 )) 
 
       if (distFromCenter > 20)
-        openDrawer
+        # openDrawer
       else
         closeDrawer
       end        
@@ -180,15 +180,11 @@ class DiscoveryView < UIView
   end
 
   def closeDrawer()
-    UIView.animate do
-      @front_view.frame = Rect(6, frame.height - 80, frame.width - 12, 90)
-    end
+    @front_view.close
   end
 
   def openDrawer()
-    UIView.animate do
-      @front_view.frame = Rect(0, frame.height - 72, frame.width, 90)
-    end
+    @front_view.open
   end
     
   def touchesEnded(touches, withEvent: event)
@@ -207,6 +203,7 @@ class DiscoveryView < UIView
         return
       elsif averageSpeed > threshold_speed or finalSpeed > threshold_speed
         animateKeepPlacard
+        openDrawer
         0.5.second.later do
           closeDrawer
         end
