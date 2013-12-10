@@ -61,7 +61,11 @@ class DrawerFrontView < UIView
     [96, 145, 225].uicolor.setFill
     UIRectFill(rect)
 
-    @label = UILabel.alloc.initWithFrame(rect)
+    [255, 255, 255].uicolor.setFill
+    UIRectFill(Rect(rect.x, rect.y + rect.height - 20, rect.width, 20))
+
+
+    @label = UILabel.alloc.initWithFrame(Rect(rect.x, rect.y , rect.width, rect.height - 20))
     @label.text = "DRAWER"
     @label.textColor = :white.uicolor
     @label.textAlignment = NSTextAlignmentCenter
