@@ -165,7 +165,7 @@ class DiscoveryView < UIView
 
       midY = self.center.y - @y_shift
       distFromCenter = location.y - @orig_touch_point.y
-      scaleFactor = ( 1.0 -  distFromCenter.abs / ( midY + 150 )) 
+      scaleFactor = ( 1.0 -  distFromCenter.abs / ( midY + 550 )) 
 
       if (distFromCenter > 20)
         openDrawer
