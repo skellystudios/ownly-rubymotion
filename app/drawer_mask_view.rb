@@ -11,7 +11,7 @@ class DrawerMaskView < UIView
   end
 
   def drawRect(rect)
-    :white.uicolor.setFill
+    "#f3f6ef".uicolor.setFill
     UIRectFill(rect)
   end
 end

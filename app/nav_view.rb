@@ -1,7 +1,7 @@
 class NavView < UIView
   def viewDidLoad
     frame = Rect(0, 0, 320, 64)
-    view.backgroundColor = :white.uicolor
+    view.backgroundColor = "#f3f6ef".uicolor
 
 #    imageView = UIImageView.alloc.initWithFrame(frame)
 #    imageView.contentMode = UIViewContentModeScaleAspectFit

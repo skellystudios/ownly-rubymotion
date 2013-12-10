@@ -1,7 +1,7 @@
 class DiscoveryView < UIView
   
   @orig_touch_point = nil
-  @y_shift = 108
+  @y_shift = 0
   @@placard_index = 0
 
   attr_reader :orig_touch_point, :placards, :placard_index, :drawer, :y_shift
@@ -14,7 +14,7 @@ class DiscoveryView < UIView
       if UIScreen.mainScreen.bounds.size.height < 560
         @y_shift = 60
       else
-        @y_shift = 108
+        @y_shift = 95
       end
 
       @drawer = UIImageView.alloc.initWithFrame(Rect(0, frame.height - 100, frame.width, 70))
@@ -59,7 +59,7 @@ class DiscoveryView < UIView
   end
   
   def addPlacard
-    placard_view = PlacardView.alloc.initWithImage(AppDelegate.PLACARD_FILES[@@placard_index])
+    placard_view = PlacardView.alloc.initWithImage(AppDelegate.PLACARD_FILES[@@placard_index].keys[0], andIndex: @@placard_index)
     @@placard_index += 1
 
     if @@placard_index >= AppDelegate.PLACARD_FILES.length
@@ -124,6 +124,7 @@ class DiscoveryView < UIView
         animateDiscardPlacard
         return
       elsif averageSpeed > threshold_speed or finalSpeed > threshold_speed
+        AppDelegate.saved_placards = AppDelegate.saved_placards + [@placards[0].index]
         animateKeepPlacard
         #@front_view.animate(@placards[0].center.y)
         return

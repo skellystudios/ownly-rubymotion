@@ -1,6 +1,10 @@
 class PlacardView < UIView
 
-  def initWithImage(img)
+  attr_reader :index
+
+  def initWithImage(img, andIndex: i)
+    @index = i
+
     # Retrieve the image for the view and determine its size
     image = UIImage.imageNamed(img)
     frame = CGRectMake(0, 0, image.size.width + 6, image.size.height + 6)

@@ -1,0 +1,3 @@
+class WebOwnView < UIWebView
+end
+

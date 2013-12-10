@@ -1,6 +1,6 @@
 class NavController < UIViewController
   def viewDidLoad
-    view.backgroundColor = UIColor.whiteColor
+    view.backgroundColor = "#f3f6ef".uicolor
     #self.title = "Navigation Example"
     imageView = UIImageView.alloc.initWithFrame(CGRectMake(0,0,320,64))
     imageView.contentMode = UIViewContentModeScaleAspectFit
