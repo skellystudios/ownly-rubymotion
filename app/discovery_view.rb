@@ -34,8 +34,12 @@ class DiscoveryView < UIView
       end
 
       # add and draw the drawer
-      @back_view = DrawerBackView.alloc.initWithFrame(Rect(14, frame.height - 100, frame.width - 28, 70))
-      @front_view = DrawerFrontView.alloc.initWithFrame(Rect(8, frame.height - 96, frame.width - 16, 70))
+      @back_view = DrawerBackView.alloc.initWithFrame(Rect(14, frame.height - 86, frame.width - 28, 30))
+      @front_view = DrawerFrontView.alloc.initWithFrame(Rect(0, frame.height - 80, frame.width, 60))
+
+      1.second.later do
+        closeDrawer
+      end
 
       #self.insertSubview(@label, belowSubview: @placards[@placards.length - 1])
 
@@ -45,6 +49,7 @@ class DiscoveryView < UIView
 
       self << @back_view
       self << @front_view
+
       #self.insertSubview(@front_view, belowSubview: @label)
     end
     self
@@ -106,8 +111,28 @@ class DiscoveryView < UIView
     if touch.view == @placards[0]
       location = touch.locationInView(self)
 
-      @placards[0].center = Point(location.x - @orig_touch_point.x + (@placards[0].frame[1].width / 2), location.y - @orig_touch_point.y + (@placards[0].frame[1].height / 2))
+      midY = self.center.y - @y_shift
+      distFromCenter = location.y - @orig_touch_point.y
+      scaleFactor = ( 1.0 -  distFromCenter.abs / ( midY + 550 )) 
+
+      if (distFromCenter > 20)
+        # openDrawer
+      else
+        closeDrawer
+      end        
+
+      @placards[0].transform = CGAffineTransformScale(CGAffineTransformIdentity, scaleFactor, scaleFactor)
+      @placards[0].center = Point(location.x - @orig_touch_point.x + (@placards[0].frame[1].width / 2) / scaleFactor, location.y - @orig_touch_point.y + (@placards[0].frame[1].height / 2 / scaleFactor))
+
     end
+  end
+
+  def closeDrawer()
+    @front_view.close
+  end
+
+  def openDrawer()
+    @front_view.open
   end
     
   def touchesEnded(touches, withEvent: event)
@@ -122,10 +147,15 @@ class DiscoveryView < UIView
 
       if averageSpeed < -threshold_speed or finalSpeed < -threshold_speed
         animateDiscardPlacard
+        closeDrawer
         return
       elsif averageSpeed > threshold_speed or finalSpeed > threshold_speed
         AppDelegate.saved_placards = AppDelegate.saved_placards + [@placards[0].index]
         animateKeepPlacard
+        openDrawer
+        0.5.second.later do
+          closeDrawer
+        end
         #@front_view.animate(@placards[0].center.y)
         return
       end
@@ -141,6 +171,7 @@ class DiscoveryView < UIView
         animateKeepPlacard
       else
         animatePlacardViewToCenter
+        closeDrawer
       end
     end
   end
@@ -256,7 +287,7 @@ class DiscoveryView < UIView
     placardLayer.addAnimation(theGroup, forKey: :animatePlacardViewTotop)
 
     @placards[0].center = Point(self.center.x, self.center.y - 500)
-    @placards[0].transform_equals(CGAffineTransformIdentity)
+    # @placards[0].transform_equals(CGAffineTransformIdentity)
   end
 
   def animateKeepPlacard
@@ -297,6 +328,6 @@ class DiscoveryView < UIView
     placardLayer.addAnimation(theGroup, forKey: :animatePlacardViewToBottom)
 
     @placards[0].center = Point(@placards[0].center.x, self.center.y + 500)
-    @placards[0].transform_equals(CGAffineTransformIdentity)
+    # @placards[0].transform_equals(CGAffineTransformIdentity)
   end
 end
